@@ -85,21 +85,11 @@ public class Algorithms {
     }
     public static <T> int partitionByRule(T[] array, int count, Predicate<T> rule) {
         int leftIndex = 0;
-        int rightIndex = count - 1;
 
-        while (leftIndex <= rightIndex) {
-            while (leftIndex < count && rule.test(array[leftIndex])) {
+        for (int i = 0; i < count; i++) {
+            if (!rule.test(array[i])) {
+                swap(array, leftIndex, i);
                 leftIndex++;
-            }
-
-            while (rightIndex >= 0 && !rule.test(array[rightIndex])) {
-                rightIndex--;
-            }
-
-            if (leftIndex < rightIndex) {
-                swap(array, leftIndex, rightIndex);
-                leftIndex++;
-                rightIndex--;
             }
         }
 
