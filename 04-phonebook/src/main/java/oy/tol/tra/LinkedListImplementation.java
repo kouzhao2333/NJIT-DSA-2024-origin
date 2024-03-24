@@ -1,7 +1,3 @@
-package oy.tol.tra;
-
-public class LinkedListImplementation<E> implements LinkedListInterface<E> {
-
    private class Node<T> {
       Node(T data) {
          element = data;
