@@ -2,11 +2,10 @@ package oy.tol.tra;
 
 
 public class Algorithms {
-    private Algorithms() {
 
-    }
 
-    public static int binarySearch(int value, Integer[] array, int fromIndex, int toIndex) {
+
+    public static  int binarySearch(int value, Integer[] array, int fromIndex, int toIndex) {
 
         while (fromIndex <= toIndex) {
             int mid = fromIndex + (toIndex - fromIndex) / 2;
@@ -22,7 +21,7 @@ public class Algorithms {
         return -1;
     }
 
-    public static int binarySearch(String value, String[] array, int fromIndex, int toIndex) {
+    public static  int binarySearch(String value, String[] array, int fromIndex, int toIndex) {
 
         while (fromIndex <= toIndex) {
             int mid = fromIndex + (toIndex - fromIndex) / 2;
@@ -40,7 +39,7 @@ public class Algorithms {
         return -1;
     }
 
-    public static void sort(Integer[] array) {
+    public static  void sort(Integer[] array) {
         int n = array.length;
         boolean swapped;
         for (int i = 0; i < n - 1; i++) {
@@ -60,16 +59,22 @@ public class Algorithms {
     }
 
     public static void sort(String[] array) {
-        fastSort(array, 0, array.length - 1);
+        fastSort(array);
     }
 
-    private static void fastSort(String[] array, int start, int end) {
+    private static  void fastSort(String[] array) {
+        if (array == null || array.length <= 1){
+            return;
+        }
+        quicksort(array, 0, array.length - 1);
+    }
+
+    private static  void quicksort(String[] array, int start, int end) {
         if (start < end) {
             int pivotIndex = partition(array, start, end);
-            fastSort(array, start, pivotIndex - 1);
-            fastSort(array, pivotIndex + 1, end);
+            quicksort(array, start, pivotIndex - 1);
+            quicksort(array, pivotIndex + 1, end);
         }
-
     }
 
     private static int partition(String[] array, int start, int end) {
