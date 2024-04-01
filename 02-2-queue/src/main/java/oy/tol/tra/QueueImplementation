@@ -1,3 +1,4 @@
+
 package oy.tol.tra;
 
 public class QueueImplementation<E> implements QueueInterface<E> {
@@ -22,6 +23,9 @@ public class QueueImplementation<E> implements QueueInterface<E> {
         try {
             this.capacity = capacity;
             itemArray = (E[]) new Object[capacity];
+            head = 0;
+            tail = 0;
+            size = 0;
         } catch (OutOfMemoryError e) {
             throw new QueueAllocationException("Failed to allocate memory for the queue.");
         }
@@ -38,20 +42,30 @@ public class QueueImplementation<E> implements QueueInterface<E> {
             throw new NullPointerException("The element cannot be null");
         }
         if (size >= capacity) {
-            resizeArray(capacity * 2);
+            resizeArray();
         }
         itemArray[tail] = element;
         tail = (tail + 1) % capacity;
         size++;
     }
 
-    private void resizeArray(int newCapacity) throws QueueAllocationException {
+    private void resizeArray() throws QueueAllocationException {
         try {
-            E[] newArray = (E[]) new Object[newCapacity];
-            for (int i = 0; i < size; i++) {
-                newArray[i] = itemArray[(head + i) % capacity];
+            int newCapacity = 2 * capacity;
+            Object [] newArray = new Object[newCapacity];
+            int i = 0;
+
+            while (i<size){
+
+                if (head+i<capacity){
+                    newArray[i] = itemArray[head+i];
+                }else {
+
+                    newArray[i] = itemArray[i-(capacity-head)];
+                }
+                i++;
             }
-            itemArray = newArray;
+            itemArray = (E[]) newArray;
             capacity = newCapacity;
             head = 0;
             tail = size;
@@ -65,10 +79,15 @@ public class QueueImplementation<E> implements QueueInterface<E> {
         if (isEmpty()) {
             throw new QueueIsEmptyException(" The queue is null");
         }
-        E dequeueElement = itemArray[head];
-        head = (head + 1) % capacity;
+        Object dequeueElement = itemArray[head];
+        itemArray[head] = null;
+        if (head == capacity-1){
+            head = 0;
+        }else {
+            head = head+1;
+        }
         size--;
-        return dequeueElement;
+        return (E) dequeueElement;
     }
 
     @Override
